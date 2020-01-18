@@ -1,8 +1,20 @@
 import React, { Component } from 'react';
+import styled from "styled-components"
 import './App.css';
 import Person from './Person/Person';
-import ValidationComponent from './Exercise2/ValidationComponent';
-import CharComponent from './Exercise2/CharComponent';
+// import ValidationComponent from './Exercise2/ValidationComponent';
+// import CharComponent from './Exercise2/CharComponent';
+
+const StyledButton = styled.button`
+background-color: ${props => props.alt ? 'red':'green'};
+color: white;
+padding: 10px;
+border: none;
+
+&:hover{
+  background-color: ${props => props.alt ? 'salmon':'lightgreen'};
+  color: black;
+`;
 
 class App extends Component {
 
@@ -78,7 +90,20 @@ class App extends Component {
 
 
   render() {
+
+    const style = {
+      backgroundColor: "green",
+      color: "white",
+      padding: "10px",
+      border: "none",
+      ':hover' : {
+        backgroundColor: 'lightgreen',
+        color: 'black'
+      }
+    }
     let persons = null;
+
+    //DISPLAY PERSONS ON CLICK
     if(this.state.showPersons){
       persons = (
         <div>
@@ -92,42 +117,53 @@ class App extends Component {
           })}
          </div>
       );
-          
+          style.backgroundColor= "red";
+          style[":hover"].backgroundColor = 'salmon';
         }
-      
-    let validation;
-   if(this.state.textLength < 5){
-        validation = <ValidationComponent  textLength={this.state.textLength} validation="too short"/>;
-    } else {
-        validation = <ValidationComponent  textLength={this.state.textLength} validation="long enough"/>
+    const classes = [];
+    if(this.state.persons.length <= 2){
+      classes.push('red');
+    } 
+    if(this.state.persons.length <= 1) {
+      classes.push('bold');
     }
+  //   let validation;
+  //  if(this.state.textLength < 5){
+  //       validation = <ValidationComponent  textLength={this.state.textLength} validation="too short"/>;
+  //   } else {
+  //       validation = <ValidationComponent  textLength={this.state.textLength} validation="long enough"/>
+  //   }
 
-    let charComponent = (
-      <div>
-        {this.state.charComponents.map((char, index) => {
-          return <CharComponent key={index} character={char} deleteItem={() => this.deleteLetter(index)}/>
-        })}
-      </div>
+    // let charComponent = (
+    //   <div>
+    //     {this.state.charComponents.map((char, index) => {
+    //       return <CharComponent key={index} character={char} deleteItem={() => this.deleteLetter(index)}/>
+    //     })}
+    //   </div>
 
-    );
+    // );
 
     return (
+      
       <div className="App">
-      <p> Crazy stuff </p>
+        <h1>Hi, I'm a React App</h1>
+          <p className={classes.join(' ')}> Crazy stuff </p>
 
       
-      <button 
-      onClick={this.togglePersonsHandler}>Toggle Persons</button>
+      <StyledButton
+          alt={this.state.showPersons}
+          onClick={this.togglePersonsHandler}>Toggle Persons
+          </StyledButton>
 
-    <input onChange={this.returnLengthHandler}></input>
+    {/* <input onChange={this.returnLengthHandler}></input> */}
    
 
     {/* <UserInput username={this.state.username} click={this.handleChange} ></UserInput>
     <UserOutput username={this.state.username} ></UserOutput> */}
     {persons}
-    {validation}
+    {/* {validation}
     <CharComponent />
-    {charComponent}
+    {charComponent} */}
       </div>
 
     );
